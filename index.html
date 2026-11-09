@@ -1,6 +1,52 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#101513"><title>Пепельная гавань — игра в стелс</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23101513'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='48' fill='%23c7ae70'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="style.css"></head><body>
-<div class="app"><header class="topbar"><div class="brand"><div class="sigil"><span>✦</span></div><div><div class="brand-title">Пепельная гавань</div><div class="brand-sub">ХРОНИКИ ЗАТОНУВШЕГО ГОРОДА</div></div></div><div class="top-right">НОЧЬ <b>·</b> 03:17 <b>·</b> СЕЗОН ЧЁРНОГО ДОЖДЯ</div></header>
-<main class="layout"><aside class="side left"><div><div class="eyebrow">Задание 04 / проникновение</div><h1>Тихий архив</h1><div class="place">РАЙОН СОЛЁНЫХ ДОКОВ · 17-Й КВАРТАЛ</div></div><div class="rule"></div><section class="objective"><div class="eyebrow">Цели операции</div><div class="obj-row"><span class="checkbox" id="ledgerCheck"></span><span><strong>Забрать реестр</strong>Он докажет, кто продаёт городскую стражу.</span></div><div class="obj-row"><span class="checkbox" id="exitCheck"></span><span><strong>Скрыться с доков</strong>Доберитесь до шлюза на востоке.</span></div></section><div class="rule"></div><div><div class="statusline"><span>УРОВЕНЬ ПОДОЗРЕНИЯ</span><span id="suspicionText">ТИШИНА</span></div><div class="meter heat"><i id="suspicionMeter"></i></div><div class="statusline"><span>СОСТОЯНИЕ СТРАЖИ</span><span id="guardCount">4 НА ПОСТУ</span></div><div class="meter"><i id="guardMeter"></i></div></div><div class="card-label">ВЫБРАННЫЙ ОПЕРАТИВНИК</div><div class="hero-mini"><div class="avatar" id="activeAvatar"></div><div><strong id="activeName">Ирена Вейл</strong><span id="activeRole">ТЕНЬ · СКОРОСТЬ</span></div></div><div class="bottom-note">Тени скрывают вас, но шум выдаёт. Смотрите на направление взгляда стражи.</div></aside>
-<section class="game-panel"><div class="game-head"><span class="district">◈ СОЛЁНЫЕ ДОКИ — СТАРЫЙ АРХИВ</span><span class="weather">ДОЖДЬ · ВЕТЕР С ВОСТОКА</span></div><div class="canvas-wrap"><canvas id="game" aria-label="Игровое поле"></canvas><div class="canvas-label">КАРТА НАБЛЮДЕНИЯ <span style="color:#c7ae70">◉</span></div><div class="sound-wave" id="soundLabel">ЗВУК: ТИХО</div><div class="toast" id="toast"></div><div class="touch-controls"><div class="touch-group"><button class="touch-btn" data-key="up">▲</button><button class="touch-btn" data-key="sneak">ТЕНЬ</button><button class="touch-btn" data-key="down">▼</button></div><div class="touch-group"><button class="touch-btn" data-key="left">◀</button><button class="touch-btn big" data-key="blink">ШИП</button><button class="touch-btn" data-key="right">▶</button><button class="touch-btn" data-key="interact">E</button><button class="touch-btn" data-key="bottle">Q</button></div></div></div><div class="game-foot"><div class="foot-tip" id="tip">Найдите реестр в старом архиве.</div><div class="controls"><span class="key">WASD</span><span class="key">SHIFT</span><span class="key">SPACE</span><span class="key">E</span><span class="key">Q</span></div></div></section>
-<aside class="side right"><div class="right-head"><div><div class="eyebrow">Кем войти в ночь?</div><h2>Список теней</h2></div><p class="right-desc">Выберите одного из тех, кто готов переписать судьбу гавани.</p></div><div class="roster" id="roster"></div><div class="ability"><div class="ability-title"><span id="abilityName">ПРИЗРАЧНЫЙ ШАГ</span><b>SPACE</b></div><p id="abilityDesc">Рывок сквозь опасность. Оставляет за собой лишь шёпот.</p><div class="alert-legend"><i class="dot"></i> патруль <i class="dot warn"></i> ищет <i class="dot alert"></i> тревога</div></div><div class="actionbar"><button class="action-btn" id="restartBtn">↻ СНАЧАЛА</button><button class="action-btn primary" id="soundBtn">🔊 ЗВУК ВКЛ</button></div></aside></main></div><script src="core.js"></script><script src="game.js"></script></body></html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#101513">
+  <title>Пепельная гавань — хроники затонувшего города</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23101513'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='48' fill='%23c7ae70'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><div class="sigil"><span>✦</span></div><div><div class="brand-title">Пепельная гавань</div><div class="brand-sub">ХРОНИКИ ЗАТОНУВШЕГО ГОРОДА</div></div></div>
+      <div class="top-right">НОЧЬ <b>·</b> 03:17 <b>·</b> СЕЗОН ЧЁРНОГО ДОЖДЯ</div>
+    </header>
+    <main class="layout">
+      <aside class="side left">
+        <div><div class="eyebrow" id="chapterLabel">Глава 01 / проникновение</div><h1 id="missionTitle">Тихий архив</h1><div class="place" id="missionPlace">РАЙОН СОЛЁНЫХ ДОКОВ · 17-Й КВАРТАЛ</div></div>
+        <div class="rule"></div>
+        <section class="objective"><div class="eyebrow">Цели операции</div>
+          <div class="obj-row"><span class="checkbox" id="ledgerCheck"></span><span><strong id="objectiveTitle">Забрать реестр</strong><span id="objectiveText">Он докажет, кто продаёт городскую стражу.</span></span></div>
+          <div class="obj-row"><span class="checkbox" id="exitCheck"></span><span><strong id="exitTitle">Скрыться с доков</strong><span id="exitText">Доберитесь до шлюза на востоке.</span></span></div>
+        </section>
+        <div class="rule"></div>
+        <div><div class="statusline"><span>УРОВЕНЬ ПОДОЗРЕНИЯ</span><span id="suspicionText">ТИШИНА</span></div><div class="meter heat"><i id="suspicionMeter"></i></div><div class="statusline"><span>СОСТОЯНИЕ СТРАЖИ</span><span id="guardCount">4 НА ПОСТУ</span></div><div class="meter"><i id="guardMeter"></i></div></div>
+        <div class="card-label">ВЫБРАННЫЙ ОПЕРАТИВНИК</div><div class="hero-mini"><div class="avatar" id="activeAvatar"></div><div><strong id="activeName">Ирена Вейл</strong><span id="activeRole">ТЕНЬ · СКОРОСТЬ</span></div></div>
+        <div class="bottom-note" id="chapterNote">Не все тайны стоит выносить на свет. В гавани правду покупают кровью.</div>
+      </aside>
+      <section class="game-panel">
+        <div class="game-head"><span class="district" id="districtLabel">◈ СОЛЁНЫЕ ДОКИ — СТАРЫЙ АРХИВ</span><span class="weather">ДОЖДЬ · ВЕТЕР С ВОСТОКА</span></div>
+        <div class="canvas-wrap">
+          <canvas id="game" aria-label="Игра от первого лица: Пепельная гавань"></canvas>
+          <div class="canvas-label">ВИД ОТ ПЕРВОГО ЛИЦА <span>◉</span></div>
+          <div class="crosshair" aria-hidden="true"><i></i><b></b></div>
+          <div class="sound-wave" id="soundLabel">ЗВУК: ТИХО</div>
+          <div class="toast" id="toast" role="status"></div>
+          <div class="interaction-prompt" id="interactionPrompt">E — ВЗАИМОДЕЙСТВОВАТЬ</div>
+          <div class="touch-controls">
+            <div class="stick-zone" id="stickZone" aria-label="Джойстик движения"><div class="stick-base"><i id="stickKnob"></i></div><span>ДВИЖЕНИЕ</span></div>
+            <div class="touch-actions"><button class="touch-btn sneak-btn" data-key="sneak">ТЕНЬ</button><button class="touch-btn" data-action="bottle">Q<br>ШУМ</button><button class="touch-btn" data-action="blink">ШИП</button><button class="touch-btn interact-btn" data-action="interact">E</button></div>
+          </div>
+          <div class="chapter-card" id="chapterCard"><div class="chapter-kicker" id="storyKicker">ХРОНИКИ ЗАТОНУВШЕГО ГОРОДА · I</div><h2 id="storyTitle">Чёрный реестр</h2><p id="storyText"></p><div class="story-speaker" id="storySpeaker"></div><div class="story-actions"><button class="action-btn primary" id="storyContinue">Войти в ночь</button></div></div>
+        </div>
+        <div class="game-foot"><div class="foot-tip" id="tip">Найдите реестр в старом архиве.</div><div class="controls"><span class="key">WASD</span><span>движение</span><span class="key">МЫШЬ</span><span>обзор</span><span class="key">SHIFT</span><span>красться</span><span class="key">E</span><span>действие</span><span class="key">SPACE</span><span>умение</span><span class="key">Q</span><span>приманка</span></div></div>
+      </section>
+      <aside class="side right"><div class="right-head"><div><div class="eyebrow">Кем войти в ночь?</div><h2>Список теней</h2></div><p class="right-desc">Выберите оперативника. У каждого свой талант и свой долг гавани.</p></div><div class="roster" id="roster"></div><div class="ability"><div class="ability-title"><span id="abilityName">ПРИЗРАЧНЫЙ ШАГ</span><b>SPACE</b></div><p id="abilityDesc">Рывок сквозь опасность. Оставляет за собой лишь шёпот.</p><div class="alert-legend"><i class="dot"></i> патруль <i class="dot warn"></i> ищет <i class="dot alert"></i> тревога</div></div><div class="actionbar"><button class="action-btn" id="restartBtn">↻ СНАЧАЛА</button><button class="action-btn" id="soundBtn">🔊 ЗВУК ВКЛ</button></div></aside>
+    </main>
+  </div>
+  <script src="core.js"></script><script src="game.js"></script>
+</body>
+</html>
